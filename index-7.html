@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Ticketing Center</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-image: url('https://res.klook.com/image/upload/v1698230011/ckhw0tak859nlipifbv3.jpg');
+            background-size: 100;
+            background-position: center;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .ticket-image {
+            width: 100%;
+            height: auto;
+            max-width: 400px;
+        }
+        .title-background {
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 10px;
+            display: inline-block;
+            border-radius: 5px;
+        }
+        .btn {
+            width: 100%;
+            max-width: 200px;
+            font-size: 1rem;
+            padding: 10px;
+        }
+        .disabled {
+            pointer-events: none;
+            opacity: 0.5;
+        }
+        #ticketSection, #printSection {
+            display: none;
+        }
+        .highlight-text {
+            color: white;
+            font-weight: bold;
+        }
+        .border-box {
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container text-center">
+        <h1 class="text-primary title-background">Welcome to the Online Ticketing Center</h1>
+        <p class="highlight-text">Get your tickets instantly with a simple click.</p>
+        <div class="row mt-4">
+            <div class="col-md-4 border-box">
+                <h3>Personal Information</h3>
+                <p><em>Fill out the form below.</em></p>
+                <input type="text" class="form-control" id="buyerName" placeholder="Enter your name">
+                <input type="email" class="form-control mt-2" placeholder="Enter your email">
+                <button class="btn btn-secondary mt-2 w-100" onclick="submitInfo()">Submit Info</button>
+                <p id="responseMessage" class="mt-2 text-success"></p>
+            </div>
+            <div class="col-md-4 border-box" id="ticketSection">
+                <h3>Ticket Price</h3>
+                <p><em>Check your ticket price here.</em></p>
+                <select class="form-select mt-2" id="ticketType" disabled>
+                    <option selected>VIP</option>
+                    <option>Patron</option>
+                    <option>Lower Box</option>
+                    <option>Upper Box</option>
+                    <option>General Admission</option>
+                </select>
+                <select class="form-select mt-2" id="ticketCategory" disabled>
+                    <option selected>Regular</option>
+                </select>
+                <button class="btn btn-warning mt-2 w-100 disabled" id="ticketPriceBtn" onclick="showTicketPrice()">Ticket Price</button>
+                <p id="ticketPriceMessage" class="mt-2 text-success"></p>
+            </div>
+            <div class="col-md-4 border-box" id="printSection">
+                <h3>Print Ticket</h3>
+                <img src="./image.jpg" alt="Concert Ticket" class="img-fluid ticket-image mt-2" id="ticketImage">
+                <button class="btn btn-primary mt-2 w-100" id="printTicketBtn" onclick="printTicket()">Print Ticket</button>
+                <button class="btn btn-success mt-2 w-100" id="buyMoreTicketBtn" onclick="buyMoreTicket()">Buy More Ticket</button>
+            </div>
+        </div>
+        
+        <p id="message" class="mt-3"></p>
+        
+        <span class="btn btn-info mt-3">Nick's Website</span>
+    </div>
+    
+    <script>
+        function submitInfo() {
+            let name = document.getElementById("buyerName").value;
+            if (name.trim() !== "") {
+                document.getElementById("responseMessage").innerText = `Thanks, ${name}. You can now proceed to the next section.`;
+                document.getElementById("ticketSection").style.display = "block";
+                document.getElementById("ticketType").disabled = false;
+                document.getElementById("ticketCategory").disabled = false;
+                document.getElementById("ticketPriceBtn").classList.remove("disabled");
+            } else {
+                document.getElementById("responseMessage").innerText = "Please enter your name.";
+            }
+        }
+        
+        function showTicketPrice() {
+            let ticketType = document.getElementById("ticketType").value;
+            let price;
+            switch(ticketType) {
+                case "VIP": price = 5000; break;
+                case "Patron": price = 4000; break;
+                case "Lower Box": price = 3000; break;
+                case "Upper Box": price = 2000; break;
+                case "General Admission": price = 1000; break;
+            }
+            document.getElementById("ticketPriceMessage").innerText = `Your ticket price is ${price}. You can now proceed to the next section and print your tickets.`;
+            document.getElementById("printSection").style.display = "block";
+        }
+        
+        function printTicket() {
+            let ticketWindow = window.open('', '_blank');
+            ticketWindow.document.write('<html><head><title>Print Ticket</title></head><body>');
+            ticketWindow.document.write('<img src="./image.jpg" style="width:100%; max-width:400px;">');
+            ticketWindow.document.write('</body></html>');
+            ticketWindow.document.close();
+            ticketWindow.print();
+        }
+        
+        function buyMoreTicket() {
+            location.reload();
+        }
+    </script>
+</body>
+</html>
